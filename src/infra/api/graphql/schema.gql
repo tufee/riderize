@@ -3,6 +3,37 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
+type Mutation {
+  createRider(data: RiderInput!): Rider!
+}
+
 type Query {
   helloWorld: String!
+}
+
+type Rider {
+  additional_information: String!
+  end_date_registration: DateTime!
+  id: String!
+  name: String!
+  participants_limit: Float!
+  start_date: DateTime!
+  start_date_registration: DateTime!
+  start_place: String!
+}
+
+input RiderInput {
+  additional_information: String
+  end_date_registration: DateTime!
+  id: String!
+  name: String!
+  participants_limit: Float
+  start_date: DateTime!
+  start_date_registration: DateTime!
+  start_place: String!
 }

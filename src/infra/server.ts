@@ -1,16 +1,15 @@
-import 'reflect-metadata';
 import { ApolloServer } from 'apollo-server';
-// import * as dotenv from 'dotenv';
+import 'reflect-metadata';
 import path from 'node:path';
 import { buildSchema } from 'type-graphql';
-import { TestResolver } from './api/graphql/resolvers/test';
+import { RiderResolver } from './api/graphql/resolvers/rider-resolver';
 import logger from './helper/logger';
 
 const PORT = process.env.PORT || 3000;
 
 async function bootstrap() {
   const schema = await buildSchema({
-    resolvers: [TestResolver],
+    resolvers: [RiderResolver],
     emitSchemaFile: path.resolve(__dirname, 'api/graphql/schema.gql'),
   });
 
