@@ -1,19 +1,26 @@
-import cors from 'cors';
-import * as dotenv from 'dotenv';
-import express from 'express';
+import 'reflect-metadata';
+import { ApolloServer } from 'apollo-server';
+// import * as dotenv from 'dotenv';
+import path from 'node:path';
+import { buildSchema } from 'type-graphql';
+import { TestResolver } from './api/graphql/resolvers/test';
 import logger from './helper/logger';
-dotenv.config();
 
-const app = express();
-const port = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
 
-app.use(express.json());
-app.use(cors());
+async function bootstrap() {
+  const schema = await buildSchema({
+    resolvers: [TestResolver],
+    emitSchemaFile: path.resolve(__dirname, 'api/graphql/schema.gql'),
+  });
 
-if (process.env.NODE_ENV !== 'test') {
-  app.listen(port, () => logger.info(`Server started on port ${port}`));
+  const server = new ApolloServer({
+    schema,
+  });
+
+  const { url } = await server.listen(PORT);
+
+  logger.info(`Server started on port ${url}`);
 }
 
-export { app };
-
-
+bootstrap();

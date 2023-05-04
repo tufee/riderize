@@ -1,15 +1,23 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es2020",
     "outDir": "out",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "module": "commonjs",
+    "module": "esnext",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "strictPropertyInitialization": false,
     "skipLibCheck": true,
-    "sourceMap": true
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "types": [
+      "node"
+    ],
+    "lib": [
+      "es2020",
+      "esnext.asynciterable"
+    ]
   }
 }
