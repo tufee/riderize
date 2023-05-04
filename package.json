@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "tsx --watch --inspect src/infra/server.ts",
+    "dev": "ts-node-dev --transpile-only src/infra/server.ts",
     "test": "jest --passWithNoTests",
     "coverage": "jest --passWithNoTests --coverage"
   },
@@ -32,7 +32,7 @@
     "editorconfig": "^1.0.2",
     "eslint": "^8.39.0",
     "jest": "^29.5.0",
-    "tsx": "^3.12.7",
+    "ts-node-dev": "^2.0.0",
     "typescript": "^5.0.4"
   }
 }
