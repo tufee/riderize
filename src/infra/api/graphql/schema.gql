@@ -10,9 +10,11 @@ scalar DateTime
 
 type Mutation {
   createRider(data: RiderInput!): Rider!
+  save(data: UserInput!): User!
 }
 
 type Query {
+  findByEmail(email: String!): User!
   helloWorld: String!
 }
 
@@ -36,4 +38,18 @@ input RiderInput {
   start_date: DateTime!
   start_date_registration: DateTime!
   start_place: String!
+}
+
+type User {
+  email: String!
+  id: String!
+  name: String!
+}
+
+input UserInput {
+  email: String!
+  emailConfirmation: String!
+  name: String!
+  password: String!
+  passwordConfirmation: String!
 }
