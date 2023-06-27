@@ -3,6 +3,7 @@ import { Service } from 'typedi';
 import { CreateUserUseCase } from '../../../../domain/usecases/create-user-usecase';
 import logger from '../../../helper/logger';
 import { UserRepository } from '../../repositores/prisma/user-repository';
+import { LoginInput } from '../input/login-input';
 import { UserInput } from '../input/user-input';
 import { User } from '../models/user-model';
 
@@ -26,7 +27,19 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async save(@Arg('data') data: UserInput): Promise<User> {
+  async save(@Arg('data') data: LoginInput): Promise<User> {
+    try {
+      return await this.createUserUseCase.execute(data);
+
+    } catch (error: any) {
+      logger.warn(error);
+      throw new Error(error);
+    }
+
+  }
+
+  @Mutation(() => User)
+  async login(@Arg('data') data: UserInput): Promise<User> {
     try {
       return await this.createUserUseCase.execute(data);
 

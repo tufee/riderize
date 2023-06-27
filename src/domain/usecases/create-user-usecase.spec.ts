@@ -7,7 +7,11 @@ describe('CreateUserUseCase', () => {
     save: vi.fn(),
   };
 
-  const createUserUseCase = new CreateUserUseCase(userPostgresRepository);
+  const encrypter: any = {
+    encrypt: vi.fn(),
+  };
+
+  const createUserUseCase = new CreateUserUseCase(userPostgresRepository, encrypter);
 
   beforeEach(() => {
     vi.resetAllMocks();
