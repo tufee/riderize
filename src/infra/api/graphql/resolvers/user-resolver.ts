@@ -27,7 +27,7 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async save(@Arg('data') data: LoginInput): Promise<User> {
+  async save(@Arg('data') data: UserInput): Promise<User> {
     try {
       return await this.createUserUseCase.execute(data);
 
@@ -38,16 +38,16 @@ export class UserResolver {
 
   }
 
-  @Mutation(() => User)
-  async login(@Arg('data') data: UserInput): Promise<User> {
-    try {
-      return await this.createUserUseCase.execute(data);
-
-    } catch (error: any) {
-      logger.warn(error);
-      throw new Error(error);
-    }
-
-  }
+  // @Mutation(() => User)
+  // async login(@Arg('data') data: UserInput): Promise<User> {
+  //   try {
+  //     return await this.createUserUseCase.execute(data);
+  //
+  //   } catch (error: any) {
+  //     logger.warn(error);
+  //     throw new Error(error);
+  //   }
+  //
+  // }
 }
 

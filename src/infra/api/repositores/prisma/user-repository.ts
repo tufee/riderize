@@ -21,6 +21,11 @@ export class UserRepository implements IUserRepository {
         name: user.name,
         email: user.email,
         password: user.password,
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true
       }
     });
   }

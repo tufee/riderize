@@ -1,7 +1,8 @@
 import { Field, ObjectType } from 'type-graphql';
 
 @ObjectType()
-export class User { @Field()
+export class User {
+  @Field()
   id: string;
 
   @Field()
@@ -10,6 +11,6 @@ export class User { @Field()
   @Field()
   email: string;
 
- @Field()
-  password: string;
+  @Field({ nullable: true })
+  password?: string;
 }
