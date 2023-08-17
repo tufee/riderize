@@ -1,4 +1,3 @@
-import { beforeEach, describe, expect, it } from 'vitest';
 import { Encrypter } from './encrypter';
 
 describe('Encrypter', () => {

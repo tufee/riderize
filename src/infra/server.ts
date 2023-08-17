@@ -1,3 +1,4 @@
+import '@types/jest';
 import { ApolloServer } from 'apollo-server';
 import path from 'node:path';
 import 'reflect-metadata';

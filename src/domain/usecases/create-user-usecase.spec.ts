@@ -1,20 +1,19 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { CreateUserUseCase } from './create-user-usecase';
 
 describe('CreateUserUseCase', () => {
   const userPostgresRepository = {
-    findByEmail: vi.fn(),
-    save: vi.fn(),
+    findByEmail: jest.fn(),
+    save: jest.fn(),
   };
 
   const encrypter: any = {
-    encrypt: vi.fn(),
+    encrypt: jest.fn(),
   };
 
   const createUserUseCase = new CreateUserUseCase(userPostgresRepository, encrypter);
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    jest.resetAllMocks();
   });
 
   it('should throw an error if user data is invalid', async () => {

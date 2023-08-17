@@ -1,16 +1,15 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { User } from '../api/graphql/models/user-model';
 import { AuthenticateUser, Request } from './AuthenticateUser';
 
 describe('AuthenticateUser', () => {
   const userPostgresRepository = {
-    findByEmail: vi.fn(),
-    save: vi.fn()
+    findByEmail: jest.fn(),
+    save: jest.fn()
   };
 
   const encrypter = {
-    encrypt: vi.fn(),
-    decrypt: vi.fn()
+    encrypt: jest.fn(),
+    decrypt: jest.fn()
   };
 
   const authenticateUser: AuthenticateUser = new AuthenticateUser(userPostgresRepository, encrypter);
@@ -28,7 +27,7 @@ describe('AuthenticateUser', () => {
   };
 
   beforeEach(() => {
-    vi.resetAllMocks();
+    jest.resetAllMocks();
   });
 
   it('should throw an error if user is not found', async () => {
