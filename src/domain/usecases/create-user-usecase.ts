@@ -1,8 +1,7 @@
 import { Service } from 'typedi';
 import { UserRepository } from '../../infra/api/repositores/prisma/user-repository';
-import { validateUser } from '../../infra/api/validator/create-user-validator';
 import { Encrypter } from '../../infra/helper/encrypter';
-import { IUser } from './create-user-dto';
+import { IUserRequest } from '../interfaces/User';
 
 @Service()
 export class CreateUserUseCase {
@@ -11,11 +10,14 @@ export class CreateUserUseCase {
     private readonly encrypter: Encrypter
   ) { }
 
-  async execute(data: IUser) {
-    const { error }: any = validateUser(data);
+  async execute(data: IUserRequest) {
 
-    if (error) {
-      throw new Error(error);
+    if (data.email !== data.emailConfirmation) {
+      throw new Error('Email confirmation does not match.');
+    }
+
+    if (data.password !== data.passwordConfirmation) {
+      throw new Error('password confirmation does not match.');
     }
 
     const isUserAlreadyRegistered = await this.userPostgresRepository.findByEmail(data.email);
@@ -32,5 +34,4 @@ export class CreateUserUseCase {
 
     return user;
   }
-
 }

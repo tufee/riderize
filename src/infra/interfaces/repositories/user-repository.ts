@@ -1,7 +1,6 @@
-import { IUser } from '../../../domain/usecases/create-user-dto';
-import { User } from '../../api/graphql/models/user-model';
+import { IUser, IUserRequest, IUserResponse } from '../../../domain/interfaces/User';
 
 export interface IUserRepository {
-  save(user: IUser): Promise<User>;
-  findByEmail(email: string): Promise<User | null>;
+  save(user: IUserRequest): Promise<IUserResponse>;
+  findByEmail(email: string): Promise<IUser | null>;
 }
