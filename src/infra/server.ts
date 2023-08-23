@@ -1,4 +1,3 @@
-import '@types/jest';
 import { ApolloServer } from 'apollo-server';
 import path from 'node:path';
 import 'reflect-metadata';
@@ -14,7 +13,6 @@ export async function bootstrap() {
   const schema = await buildSchema({
     resolvers: [RiderResolver, UserResolver],
     emitSchemaFile: path.resolve(__dirname, 'api/graphql/schema.gql'),
-    validate: false,
     container: Container,
   });
 
