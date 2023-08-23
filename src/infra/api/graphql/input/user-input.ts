@@ -1,10 +1,11 @@
-import { IsEmail } from 'class-validator';
+import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
-import { User } from '../models/user-model';
 
 @InputType()
-export class UserInput implements Partial<User> {
+export class UserInput {
   @Field()
+  @IsNotEmpty()
+  @MinLength(3)
   name: string;
 
   @Field()
@@ -16,8 +17,12 @@ export class UserInput implements Partial<User> {
   emailConfirmation: string;
 
   @Field()
+  @IsNotEmpty()
+  @MinLength(8)
   password: string;
 
   @Field()
+  @IsNotEmpty()
+  @MinLength(8)
   passwordConfirmation: string;
 }
