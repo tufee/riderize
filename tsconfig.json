@@ -19,8 +19,5 @@
       "es2020",
       "esnext.asynciterable"
     ],
-},
-  "include": [
-    "global.d.ts"
-  ]
+  },
 }
