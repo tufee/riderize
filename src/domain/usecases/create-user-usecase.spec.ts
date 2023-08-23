@@ -1,69 +1,116 @@
+import { UserRepository } from '../../infra/api/repositores/prisma/user-repository';
+import { Encrypter } from '../../infra/helper/encrypter';
+import { IUser, IUserRequest, IUserResponse } from '../interfaces/User';
 import { CreateUserUseCase } from './create-user-usecase';
 
+jest.mock('../../infra/api/repositores/prisma/user-repository');
+jest.mock('../../infra/helper/encrypter');
+
 describe('CreateUserUseCase', () => {
-  const userPostgresRepository = {
-    findByEmail: jest.fn(),
-    save: jest.fn(),
-  };
+  const UserRepositoryMock = UserRepository as jest.Mock<UserRepository>;
+  const EncrypterMock = Encrypter as jest.Mock<Encrypter>;
 
-  const encrypter: any = {
-    encrypt: jest.fn(),
-  };
+  const userPostgresRepositoryMock = new UserRepositoryMock() as
+    jest.Mocked<UserRepository>;
+  const encrypterMock = new EncrypterMock() as jest.Mocked<Encrypter>;
 
-  const createUserUseCase = new CreateUserUseCase(userPostgresRepository, encrypter);
+  const createUserUseCase = new CreateUserUseCase(
+    userPostgresRepositoryMock, encrypterMock
+  );
 
   beforeEach(() => {
     jest.resetAllMocks();
   });
 
-  it('should throw an error if user data is invalid', async () => {
-    const invalidUserData: any = {
-      name: '',
-      email: 'invalid-email',
-      emailConfirmation: 'invalid-email',
-      password: '123456',
-      passwordConfirmation: '123456',
-    };
+  it('should create a new user if all data is valid and user is not already registered',
+    async () => {
+      const newUser: IUserResponse = {
+        id: 'UUID',
+        name: 'john',
+        email: 'johndoe@example.com',
+      };
 
-    await expect(createUserUseCase.execute(invalidUserData)).rejects.toThrowError();
-  });
+      const newUserRequest: IUserRequest = {
+        name: 'john',
+        email: 'johndoe@example.com',
+        emailConfirmation: 'johndoe@example.com',
+        password: '12345678',
+        passwordConfirmation: '12345678',
+      };
+
+      userPostgresRepositoryMock.findByEmail.mockResolvedValue(null);
+      encrypterMock.encrypt.mockResolvedValue('hashedPassword');
+      userPostgresRepositoryMock.save.mockResolvedValue(newUser);
+
+      const result = await createUserUseCase.execute(newUserRequest);
+
+      expect(result).toEqual(newUser);
+      expect(userPostgresRepositoryMock.findByEmail)
+        .toHaveBeenCalledWith(newUserRequest.email);
+
+      expect(encrypterMock.encrypt)
+        .toHaveBeenCalledWith(newUserRequest.password);
+
+      expect(userPostgresRepositoryMock.save)
+        .toHaveBeenCalledWith({
+          ...newUserRequest,
+          password: 'hashedPassword'
+        });
+    });
+
+  it('should throw an error if email and emailConfirmation does not match',
+    async () => {
+      const invalidUserRequest: IUserRequest = {
+        name: 'john',
+        email: 'johndoe@example.com',
+        emailConfirmation: 'johndoe2@example.com',
+        password: '12345678',
+        passwordConfirmation: '12345678',
+      };
+
+      await expect(createUserUseCase.execute(invalidUserRequest))
+        .rejects
+        .toThrowError('Email confirmation does not match.');
+    });
+
+  it('should throw an error if password and passwordConfirmation does not match',
+    async () => {
+      const invalidUserRequest: IUserRequest = {
+        name: 'john',
+        email: 'johndoe@example.com',
+        emailConfirmation: 'johndoe@example.com',
+        password: '12345678',
+        passwordConfirmation: '12345678999',
+      };
+
+      await expect(createUserUseCase.execute(invalidUserRequest))
+        .rejects
+        .toThrowError('Password confirmation does not match.');
+    });
 
   it('should throw an error if user is already registered', async () => {
-    const existingUser: any = {
-      id: 'uuid',
-      name: 'John Doe',
+    const user: IUser = {
+      id: 'UUID',
+      name: 'john',
       email: 'johndoe@example.com',
+      password: '12345678'
     };
 
-    userPostgresRepository.findByEmail.mockReturnValue(existingUser);
-
-    const newUser: any = {
-      name: 'Jane Doe',
-      email: 'johndoe@example.com',
-      emailConfirmation: 'johndoe@example.com',
-      password: 'abcdefgh',
-      passwordConfirmation: 'abcdefgh',
-    };
-
-    await expect(createUserUseCase.execute(newUser)).rejects.toThrowError('User already registered');
-  });
-
-  it('should create a new user if all data is valid and user is not already registered', async () => {
-    const newUser: any = {
-      name: 'Jane Doe',
+    const userRequest: IUserRequest = {
+      name: 'john',
       email: 'johndoe@example.com',
       emailConfirmation: 'johndoe@example.com',
-      password: 'abcdefgh',
-      passwordConfirmation: 'abcdefgh',
+      password: '12345678',
+      passwordConfirmation: '12345678',
     };
 
-    userPostgresRepository.findByEmail.mockReturnValue(null);
-    userPostgresRepository.save.mockReturnValue(newUser);
+    userPostgresRepositoryMock.findByEmail.mockResolvedValue(user);
 
-    const result = await createUserUseCase.execute(newUser);
+    await expect(createUserUseCase.execute(userRequest))
+      .rejects
+      .toThrowError('User already registered.');
 
-    expect(userPostgresRepository.findByEmail).toHaveBeenCalledWith(newUser.email);
-    expect(userPostgresRepository.save).toHaveBeenCalledWith(newUser);
-    expect(result).toEqual(newUser);
+    expect(userPostgresRepositoryMock.findByEmail)
+      .toHaveBeenCalledWith(userRequest.email);
   });
 });

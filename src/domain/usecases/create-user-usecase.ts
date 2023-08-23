@@ -17,20 +17,21 @@ export class CreateUserUseCase {
     }
 
     if (data.password !== data.passwordConfirmation) {
-      throw new Error('password confirmation does not match.');
+      throw new Error('Password confirmation does not match.');
     }
 
     const isUserAlreadyRegistered = await this.userPostgresRepository.findByEmail(data.email);
 
     if (isUserAlreadyRegistered) {
-      throw new Error('User already registered');
+      throw new Error('User already registered.');
     }
 
     const hashedPassword = await this.encrypter.encrypt(data.password);
 
-    data.password = hashedPassword;
-
-    const user = await this.userPostgresRepository.save(data);
+    const user = await this.userPostgresRepository.save({
+      ...data,
+      password: hashedPassword
+    });
 
     return user;
   }
