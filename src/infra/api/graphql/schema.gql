@@ -3,14 +3,24 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+type AuthenticationToken {
+  token: String!
+}
+
 """
 The javascript `Date` as string. Type represents date and time as the ISO Date string.
 """
 scalar DateTime
 
+input LoginInput {
+  email: String!
+  password: String!
+}
+
 type Mutation {
   createRider(data: RiderInput!): Rider!
-  save(data: UserInput!): User!
+  login(data: LoginInput!): AuthenticationToken!
+  save(data: UserInput!): UserWithoutPassword!
 }
 
 type Query {
@@ -44,7 +54,7 @@ type User {
   email: String!
   id: String!
   name: String!
-  password: String
+  password: String!
 }
 
 input UserInput {
@@ -53,4 +63,10 @@ input UserInput {
   name: String!
   password: String!
   passwordConfirmation: String!
+}
+
+type UserWithoutPassword {
+  email: String!
+  id: String!
+  name: String!
 }
