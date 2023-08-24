@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { IUser, IUserRequest, IUserResponse } from '../../../../domain/interfaces/User';
+import { IUser, IUserRequest } from '../../../../domain/interfaces/User';
 import { IUserRepository } from '../../../interfaces/repositories/user-repository';
 import { prisma } from './prisma-client';
 
@@ -14,17 +14,12 @@ export class UserRepository implements IUserRepository {
     });
   }
 
-  async save(user: IUserRequest): Promise<IUserResponse> {
+  async save(user: IUserRequest): Promise<IUser> {
     return await prisma.user.create({
       data: {
         name: user.name,
         email: user.email,
         password: user.password,
-      },
-      select: {
-        id: true,
-        name: true,
-        email: true
       }
     });
   }
