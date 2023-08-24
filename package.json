@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "ts-node-dev --inspect --transpile-only src/infra/server.ts",
     "test": "jest",
-    "coverage": "jest --coverage"
+    "coverage": "jest --coverage",
+    "eslint": "npx eslint .",
+    "eslint:fix": "npx eslint --fix"
   },
   "keywords": [],
   "author": "",
