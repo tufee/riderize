@@ -1,6 +1,6 @@
 import { UserRepository } from '../../infra/api/repositores/prisma/user-repository';
 import { Encrypter } from '../../infra/helper/encrypter';
-import { IUser, IUserRequest, IUserResponse } from '../interfaces/User';
+import { IUser, IUserRequest } from '../interfaces/User';
 import { CreateUserUseCase } from './create-user-usecase';
 
 jest.mock('../../infra/api/repositores/prisma/user-repository');
@@ -24,10 +24,11 @@ describe('CreateUserUseCase', () => {
 
   it('should create a new user if all data is valid and user is not already registered',
     async () => {
-      const newUser: IUserResponse = {
+      const newUser: IUser = {
         id: 'UUID',
         name: 'john',
         email: 'johndoe@example.com',
+        password: 'hashedPassword',
       };
 
       const newUserRequest: IUserRequest = {
@@ -44,7 +45,12 @@ describe('CreateUserUseCase', () => {
 
       const result = await createUserUseCase.execute(newUserRequest);
 
-      expect(result).toEqual(newUser);
+      expect(result).toEqual({
+        id: newUser.id,
+        name: newUser.name,
+        email: newUser.email
+      });
+
       expect(userPostgresRepositoryMock.findByEmail)
         .toHaveBeenCalledWith(newUserRequest.email);
 

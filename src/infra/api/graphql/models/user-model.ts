@@ -1,7 +1,8 @@
 import { Field, ObjectType } from 'type-graphql';
+import { IUser, IUserWithoutPassword } from '../../../../domain/interfaces/User';
 
 @ObjectType()
-export class User {
+export class User implements IUser {
   @Field()
   id: string;
 
@@ -11,6 +12,18 @@ export class User {
   @Field()
   email: string;
 
-  @Field({ nullable: true })
-  password?: string;
+  @Field()
+  password: string;
+}
+
+@ObjectType()
+export class UserWithoutPassword implements IUserWithoutPassword {
+  @Field()
+  id: string;
+
+  @Field()
+  name: string;
+
+  @Field()
+  email: string;
 }

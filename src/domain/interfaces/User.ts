@@ -5,6 +5,12 @@ export interface IUser {
   password: string;
 }
 
+export interface IUserWithoutPassword {
+  id: string;
+  name: string;
+  email: string;
+}
+
 export interface IUserRequest {
   name: string;
   email: string;
@@ -13,8 +19,7 @@ export interface IUserRequest {
   passwordConfirmation: string;
 }
 
-export interface IUserResponse {
-  id: string;
-  name: string;
+export interface IUserLogin {
   email: string;
+  password: string;
 }

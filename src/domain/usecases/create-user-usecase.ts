@@ -2,6 +2,7 @@ import { Service } from 'typedi';
 import { UserRepository } from '../../infra/api/repositores/prisma/user-repository';
 import { Encrypter } from '../../infra/helper/encrypter';
 import { IUserRequest } from '../interfaces/User';
+import { UserWithoutPassword } from '../../infra/api/graphql/models/user-model';
 
 @Service()
 export class CreateUserUseCase {
@@ -10,7 +11,7 @@ export class CreateUserUseCase {
     private readonly encrypter: Encrypter
   ) { }
 
-  async execute(data: IUserRequest) {
+  async execute(data: IUserRequest): Promise<UserWithoutPassword> {
 
     if (data.email !== data.emailConfirmation) {
       throw new Error('Email confirmation does not match.');
@@ -28,11 +29,15 @@ export class CreateUserUseCase {
 
     const hashedPassword = await this.encrypter.encrypt(data.password);
 
-    const user = await this.userPostgresRepository.save({
+    const savedUser = await this.userPostgresRepository.save({
       ...data,
       password: hashedPassword
     });
 
-    return user;
+    return {
+      id: savedUser.id,
+      name: savedUser.name,
+      email: savedUser.email
+    };
   }
 }
