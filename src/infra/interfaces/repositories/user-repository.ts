@@ -1,6 +1,6 @@
-import { IUser, IUserRequest, IUserResponse } from '../../../domain/interfaces/User';
+import { IUser, IUserRequest } from '../../../domain/interfaces/User';
 
 export interface IUserRepository {
-  save(user: IUserRequest): Promise<IUserResponse>;
+  save(user: IUserRequest): Promise<IUser>;
   findByEmail(email: string): Promise<IUser | null>;
 }
