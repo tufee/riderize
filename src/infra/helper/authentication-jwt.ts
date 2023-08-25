@@ -1,7 +1,8 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import { AuthChecker } from 'type-graphql';
 import { Service } from 'typedi';
 import { authConfig } from './authConfig';
+import logger from './logger';
 
 interface Context {
   token: string;
@@ -10,16 +11,21 @@ interface Context {
 @Service()
 export class AuthenticationJwt {
   generateToken(userId: string): string {
-    const payload = { userId };
-    return jwt.sign(payload, authConfig.jwt.secret,
-      { expiresIn: authConfig.jwt.expiresIn }
-    );
+    try {
+      return jwt.sign({ userId }, authConfig.jwt.secret,
+        { expiresIn: authConfig.jwt.expiresIn }
+      );
+    } catch (error) {
+      logger.warn(error);
+      throw new Error('JWT signing error');
+    }
   }
 
-  verifyToken(token: string): any {
+  verifyToken(token: string): JwtPayload | string {
     try {
       return jwt.verify(token, authConfig.jwt.secret);
     } catch (error) {
+      logger.warn(error);
       throw new Error('Invalid token');
     }
   }
