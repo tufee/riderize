@@ -32,7 +32,7 @@ describe('AuthenticateUserUseCase', () => {
       id: 'UUID',
       name: 'john',
       email: 'john@example',
-      password: '12345678'
+      password: 'hashedPassword'
     };
 
     userPostgresRepositoryMock.findByEmail.mockResolvedValue(user);
@@ -60,6 +60,55 @@ describe('AuthenticateUserUseCase', () => {
     expect(authenticationJwtMock.generateToken)
       .toHaveBeenCalledWith(
         user.id
+      );
+  });
+
+  it('Should throw an error if user is not found', async () => {
+    const request = {
+      email: 'john_fail@example.com',
+      password: '12345678'
+    };
+
+    userPostgresRepositoryMock.findByEmail.mockResolvedValue(null);
+
+    await expect(authenticateUserUseCase.execute(request))
+      .rejects
+      .toThrowError('User or password is incorrect');
+
+    expect(userPostgresRepositoryMock.findByEmail)
+      .toHaveBeenCalledWith(
+        request.email
+      );
+  });
+
+  it('Should throw an error if user password does not match', async () => {
+    const user: IUser = {
+      id: 'UUID',
+      name: 'john',
+      email: 'john@example',
+      password: 'hashedPassword'
+    };
+
+    const request = {
+      email: 'john@example.com',
+      password: '12345678'
+    };
+
+    userPostgresRepositoryMock.findByEmail.mockResolvedValue(user);
+    encrypterMock.decrypt.mockResolvedValue(false);
+
+    await expect(authenticateUserUseCase.execute(request))
+      .rejects
+      .toThrowError('User or password is incorrect');
+
+    expect(userPostgresRepositoryMock.findByEmail)
+      .toHaveBeenCalledWith(
+        request.email
+      );
+
+    expect(encrypterMock.decrypt)
+      .toHaveBeenCalledWith(
+        request.password, user.password
       );
   });
 });
