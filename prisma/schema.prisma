@@ -8,8 +8,33 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  name     String
-  email    String @unique
-  password String
+  id           String        @id @default(uuid())
+  name         String
+  email        String        @unique
+  password     String
+  rides        Ride[]
+  inscriptions Inscription[]
+}
+
+model Ride {
+  id                      String        @id @default(uuid())
+  name                    String
+  start_date              DateTime
+  start_date_registration DateTime
+  end_date_registration   DateTime
+  additional_information  String
+  start_place             String
+  participants_limit      Int
+  user                    User          @relation(fields: [userId], references: [id])
+  userId                  String
+  inscriptions            Inscription[]
+}
+
+model Inscription {
+  id                String   @id @default(uuid())
+  subscription_date DateTime
+  user              User     @relation(fields: [userId], references: [id])
+  userId            String
+  ride              Ride     @relation(fields: [rideId], references: [id])
+  rideId            String
 }
