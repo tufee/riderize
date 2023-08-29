@@ -9,14 +9,12 @@ jest.mock('../../infra/helper/encrypter');
 jest.mock('../../infra/helper/authentication-jwt');
 
 describe('AuthenticateUserUseCase', () => {
-  const UserRepositoryMock = UserRepository as jest.Mock<UserRepository>;
-  const EncrypterMock = Encrypter as jest.Mock<Encrypter>;
-  const AuthenticationJwtMock = AuthenticationJwt as jest.Mock<AuthenticationJwt>;
-
-  const userPostgresRepositoryMock = new UserRepositoryMock() as
+  const userPostgresRepositoryMock = new UserRepository() as
     jest.Mocked<UserRepository>;
-  const encrypterMock = new EncrypterMock() as jest.Mocked<Encrypter>;
-  const authenticationJwtMock = new AuthenticationJwtMock() as
+
+  const encrypterMock = new Encrypter() as jest.Mocked<Encrypter>;
+
+  const authenticationJwtMock = new AuthenticationJwt() as
     jest.Mocked<AuthenticationJwt>;
 
   const authenticateUserUseCase = new AuthenticateUserUseCase(

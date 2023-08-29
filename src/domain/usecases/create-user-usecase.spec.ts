@@ -8,12 +8,10 @@ jest.mock('../../infra/api/repositores/prisma/user-repository');
 jest.mock('../../infra/helper/encrypter');
 
 describe('CreateUserUseCase', () => {
-  const UserRepositoryMock = UserRepository as jest.Mock<UserRepository>;
-  const EncrypterMock = Encrypter as jest.Mock<Encrypter>;
-
-  const userPostgresRepositoryMock = new UserRepositoryMock() as
+  const userPostgresRepositoryMock = new UserRepository() as
     jest.Mocked<UserRepository>;
-  const encrypterMock = new EncrypterMock() as jest.Mocked<Encrypter>;
+
+  const encrypterMock = new Encrypter() as jest.Mocked<Encrypter>;
 
   const createUserUseCase = new CreateUserUseCase(
     userPostgresRepositoryMock, encrypterMock
