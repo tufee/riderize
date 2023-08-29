@@ -1,9 +1,8 @@
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 import { Field, InputType } from 'type-graphql';
-import { IUserRequest } from '../../../../domain/interfaces/User';
 
 @InputType()
-export class UserInput implements IUserRequest {
+export class CreateUserInput {
   @Field()
   @IsNotEmpty()
   @MinLength(3)
@@ -26,4 +25,16 @@ export class UserInput implements IUserRequest {
   @IsNotEmpty()
   @MinLength(8)
   passwordConfirmation: string;
+}
+
+@InputType()
+export class LoginInput {
+  @Field()
+  @IsEmail()
+  email: string;
+
+  @Field()
+  @IsNotEmpty()
+  @MinLength(8)
+  password: string;
 }
