@@ -40,7 +40,3 @@ export class AuthenticationJwt {
     return !!this.verifyToken(token);
   };
 }
-
-
-
-
