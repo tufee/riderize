@@ -1,5 +1,5 @@
 import { Service } from 'typedi';
-import { AuthenticationToken } from '../../infra/api/graphql/models/authentication-model';
+import { AuthenticationToken } from '../../infra/api/graphql/type/authentication-type';
 import { UserRepository } from '../../infra/api/repositores/prisma/user-repository';
 import { AuthenticationJwt } from '../../infra/helper/authentication-jwt';
 import { Encrypter } from '../../infra/helper/encrypter';

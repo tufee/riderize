@@ -7,10 +7,13 @@ type AuthenticationToken {
   token: String!
 }
 
-"""
-The javascript `Date` as string. Type represents date and time as the ISO Date string.
-"""
-scalar DateTime
+input CreateUserInput {
+  email: String!
+  emailConfirmation: String!
+  name: String!
+  password: String!
+  passwordConfirmation: String!
+}
 
 input LoginInput {
   email: String!
@@ -18,36 +21,12 @@ input LoginInput {
 }
 
 type Mutation {
-  createRider(data: RiderInput!): Rider!
   login(data: LoginInput!): AuthenticationToken!
-  save(data: UserInput!): UserWithoutPassword!
+  save(data: CreateUserInput!): UserWithoutPassword!
 }
 
 type Query {
   findByEmail(email: String!): User!
-  helloWorld: String!
-}
-
-type Rider {
-  additional_information: String!
-  end_date_registration: DateTime!
-  id: String!
-  name: String!
-  participants_limit: Float!
-  start_date: DateTime!
-  start_date_registration: DateTime!
-  start_place: String!
-}
-
-input RiderInput {
-  additional_information: String
-  end_date_registration: DateTime!
-  id: String!
-  name: String!
-  participants_limit: Float
-  start_date: DateTime!
-  start_date_registration: DateTime!
-  start_place: String!
 }
 
 type User {
@@ -55,14 +34,6 @@ type User {
   id: String!
   name: String!
   password: String!
-}
-
-input UserInput {
-  email: String!
-  emailConfirmation: String!
-  name: String!
-  password: String!
-  passwordConfirmation: String!
 }
 
 type UserWithoutPassword {

@@ -1,12 +1,13 @@
 import { Service } from 'typedi';
-import { IUser, IUserRequest } from '../../../../domain/interfaces/User';
 import { IUserRepository } from '../../../interfaces/repositories/user-repository';
+import { CreateUserInput } from '../../graphql/input/user-input';
+import { User } from '../../graphql/type/user-type';
 import { prisma } from './prisma-client';
 
 @Service()
 export class UserRepository implements IUserRepository {
 
-  async findByEmail(email: string): Promise<IUser | null> {
+  async findByEmail(email: string): Promise<User | null> {
     return await prisma.user.findUnique({
       where: {
         email
@@ -14,7 +15,7 @@ export class UserRepository implements IUserRepository {
     });
   }
 
-  async save(user: IUserRequest): Promise<IUser> {
+  async save(user: CreateUserInput): Promise<User> {
     return await prisma.user.create({
       data: {
         name: user.name,

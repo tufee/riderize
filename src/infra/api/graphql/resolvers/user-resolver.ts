@@ -4,10 +4,9 @@ import { AuthenticateUserUseCase } from '../../../../domain/usecases/authenticat
 import { CreateUserUseCase } from '../../../../domain/usecases/create-user-usecase';
 import logger from '../../../helper/logger';
 import { UserRepository } from '../../repositores/prisma/user-repository';
-import { LoginInput } from '../input/login-input';
-import { UserInput } from '../input/user-input';
-import { AuthenticationToken } from '../models/authentication-model';
-import { User, UserWithoutPassword } from '../models/user-model';
+import { CreateUserInput, LoginInput } from '../input/user-input';
+import { AuthenticationToken } from '../type/authentication-type';
+import { User, UserWithoutPassword } from '../type/user-type';
 
 @Service()
 @Resolver()
@@ -30,7 +29,7 @@ export class UserResolver {
   }
 
   @Mutation(() => UserWithoutPassword)
-  async save(@Arg('data') data: UserInput): Promise<UserWithoutPassword> {
+  async save(@Arg('data') data: CreateUserInput): Promise<UserWithoutPassword> {
     try {
       return await this.createUserUseCase.execute(data);
 

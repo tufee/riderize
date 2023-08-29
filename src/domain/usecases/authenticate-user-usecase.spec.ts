@@ -1,7 +1,7 @@
+import { User } from '../../infra/api/graphql/type/user-type';
 import { UserRepository } from '../../infra/api/repositores/prisma/user-repository';
 import { AuthenticationJwt } from '../../infra/helper/authentication-jwt';
 import { Encrypter } from '../../infra/helper/encrypter';
-import { IUser } from '../interfaces/User';
 import { AuthenticateUserUseCase } from './authenticate-user-usecase';
 
 jest.mock('../../infra/api/repositores/prisma/user-repository');
@@ -28,7 +28,7 @@ describe('AuthenticateUserUseCase', () => {
   });
 
   it('Should return a token if authentication succeeds', async () => {
-    const user: IUser = {
+    const user: User = {
       id: 'UUID',
       name: 'john',
       email: 'john@example',
@@ -82,7 +82,7 @@ describe('AuthenticateUserUseCase', () => {
   });
 
   it('Should throw an error if user password does not match', async () => {
-    const user: IUser = {
+    const user: User = {
       id: 'UUID',
       name: 'john',
       email: 'john@example',

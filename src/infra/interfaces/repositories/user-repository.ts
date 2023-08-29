@@ -1,6 +1,7 @@
-import { IUser, IUserRequest } from '../../../domain/interfaces/User';
+import { CreateUserInput } from '../../api/graphql/input/user-input';
+import { User } from '../../api/graphql/type/user-type';
 
 export interface IUserRepository {
-  save(user: IUserRequest): Promise<IUser>;
-  findByEmail(email: string): Promise<IUser | null>;
+  save(user: CreateUserInput): Promise<User>;
+  findByEmail(email: string): Promise<User | null>;
 }
