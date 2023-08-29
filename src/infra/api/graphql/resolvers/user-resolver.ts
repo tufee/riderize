@@ -1,4 +1,4 @@
-import { Arg, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Authorized, Mutation, Query, Resolver } from 'type-graphql';
 import { Service } from 'typedi';
 import { AuthenticateUserUseCase } from '../../../../domain/usecases/authenticate-user-usecase';
 import { CreateUserUseCase } from '../../../../domain/usecases/create-user-usecase';
@@ -18,6 +18,7 @@ export class UserResolver {
   ) { }
 
   @Query(() => User)
+  @Authorized()
   async findByEmail(@Arg('email') email: string): Promise<User | null> {
     try {
       return await this.userPostgresRepository.findByEmail(email);
