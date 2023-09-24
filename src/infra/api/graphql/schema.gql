@@ -11,7 +11,7 @@ input CreateRideInput {
   additional_information: String
   end_date_registration: DateTime!
   name: String!
-  participants_limit: Float
+  participants_limit: Int
   start_date: DateTime!
   start_date_registration: DateTime!
   start_place: String!
@@ -31,6 +31,18 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 """
 scalar DateTime
 
+type Inscription {
+  ride_id: String!
+  subscription_date: DateTime!
+  user_id: String!
+}
+
+input InscriptionInput {
+  ride_id: String!
+  subscription_date: DateTime!
+  user_id: String!
+}
+
 input LoginInput {
   email: String!
   password: String!
@@ -38,6 +50,7 @@ input LoginInput {
 
 type Mutation {
   create(data: CreateRideInput!): Ride!
+  createInscription(data: InscriptionInput!): Inscription!
   login(data: LoginInput!): AuthenticationToken!
   save(data: CreateUserInput!): UserWithoutPassword!
 }
