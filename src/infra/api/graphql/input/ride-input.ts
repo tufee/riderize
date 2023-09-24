@@ -1,5 +1,5 @@
 import { IsDate, IsNotEmpty } from 'class-validator';
-import { Field, InputType } from 'type-graphql';
+import { Field, InputType, Int } from 'type-graphql';
 
 @InputType()
 export class CreateRideInput {
@@ -33,6 +33,6 @@ export class CreateRideInput {
   @IsNotEmpty()
   start_place: string;
 
-  @Field({ nullable: true })
+  @Field(() => Int, { nullable: true })
   participants_limit?: number;
 }
