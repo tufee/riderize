@@ -16,7 +16,7 @@ export class User {
 }
 
 @ObjectType()
-export class UserWithoutPassword {
+export class UserWithoutPassword implements Omit<User, 'password'> {
   @Field()
   id: string;
 
