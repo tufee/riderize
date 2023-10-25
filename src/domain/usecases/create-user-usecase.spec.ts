@@ -18,7 +18,7 @@ describe('CreateUserUseCase', () => {
   );
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
   it('should create a new user if all data is valid and user is not already registered',
