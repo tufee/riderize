@@ -10,4 +10,12 @@ export class InscriptionRepository implements IInscriptionRepository {
   async save(data: InscriptionInput): Promise<Inscription> {
     return await prisma.inscription.create({ data });
   }
+
+  async findByUserId(user_id: string): Promise<Inscription[] | null> {
+    return await prisma.inscription.findMany({
+      where: {
+        user_id,
+      },
+    });
+  }
 }
