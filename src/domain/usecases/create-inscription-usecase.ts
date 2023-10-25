@@ -18,7 +18,7 @@ export class CreateInscriptionUseCase {
 
     if (ride === null) throw new Error('Ride not found');
 
-    if (this.userRepository.findById(data.user_id) === null) {
+    if (await this.userRepository.findById(data.user_id) === null) {
       throw new Error('User not found');
     }
 
