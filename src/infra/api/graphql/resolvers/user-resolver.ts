@@ -17,7 +17,7 @@ export class UserResolver {
     private readonly authenticateUserUseCase: AuthenticateUserUseCase
   ) { }
 
-  @Query(() => User)
+  @Query(() => User, { nullable: true })
   @Authorized()
   async findByEmail(@Arg('email') email: string): Promise<User | null> {
     try {
@@ -49,7 +49,5 @@ export class UserResolver {
       logger.warn(error);
       throw new Error(error);
     }
-
   }
 }
-
