@@ -4,7 +4,7 @@ import { AuthenticationJwt } from './authentication-jwt';
 import logger from './logger';
 
 jest.mock('jsonwebtoken');
-jest.mock('./logger.ts');
+jest.mock('./logger');
 
 describe('AuthenticationJwt', () => {
   const authenticateJwt = new AuthenticationJwt();
