@@ -22,7 +22,7 @@ describe('AuthenticateUserUseCase', () => {
   );
 
   beforeEach(() => {
-    jest.resetAllMocks();
+    jest.clearAllMocks();
   });
 
   it('Should return a token if authentication succeeds', async () => {
