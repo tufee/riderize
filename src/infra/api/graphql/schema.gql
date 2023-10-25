@@ -56,7 +56,10 @@ type Mutation {
 }
 
 type Query {
-  findByEmail(email: String!): User!
+  findAll: [Ride!]
+  findByEmail(email: String!): User
+  findByUserId(user_id: String!): [Ride!]
+  findInscriptionByUserId(user_id: String!): [Inscription!]
 }
 
 type Ride {
