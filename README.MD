@@ -44,3 +44,7 @@ Você pode utilizar o seguinte comando para verificar a cobertura de testes da a
 ```
 npm run coverage
 ```
+
+Você pode verificar as diretrizes do projeto na seguinte url:
+
+<https://github.com/tufee/riderize/blob/main/README-TEST.MD>
